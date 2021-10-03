@@ -1,6 +1,6 @@
 # Organizer-for-study
 
-That descktop application showld help to manage selfaducational process.
+That desktop application showld help to manage selfaducational process.
 
 Main purposes are:
 1. Place to make and store notes.
