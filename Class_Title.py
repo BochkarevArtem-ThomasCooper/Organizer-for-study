@@ -26,8 +26,12 @@ class Title: # That class represents notes for one studeing metter
         
         layout = [
             [sg.Text(Text =topic, auto_size_text=True)],
-            [sg.Text(Text =timeInvolved, auto_size_text=True)],
-            [sg.Combo(DB.get_literature_list(litTableName), bind_return_key=True, enable_events=True, readonly=True, k='-COMBO-')] # here sould be added a dictionary tipe object, created from Literature table 
+            [sg.Text(Text =timeInvolved, auto_size_text=True), sg.Button('-TSTART-')],
+            [sg.Combo(DB.get_literature_list(litTableName), bind_return_key=True, enable_events=True, readonly=True, k='-COMBO-')],
+            [sg.Multiline(default_text='Tipe your notes in here.', size=(200,200,),  key='-LOG-')],
+            [sg.Input(key='-IN-', size=(10,1)), sg.CalendarButton('Choose date', close_when_date_chosen=True,  target='-IN-', location=(0,0), format='%d.%m.%Y', no_titlebar=False, )]
             ]
+
+        return sg.Tab(self.titleName, layout)
 
     #def save_result(self): # That function updates data in datdbase.

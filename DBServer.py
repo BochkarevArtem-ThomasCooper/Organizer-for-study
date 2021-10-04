@@ -3,6 +3,8 @@
 import sqlite3
 import PySimpleGUI as sg
 
+import Class_Title as CTitle
+
 sg.theme('DarkBlack1')
 
 con = sqlite3.connect('Study_Notes.db')
@@ -20,10 +22,14 @@ def first_run(): # That func. creates the main table we use to store our users l
     except Exception as e:
         sg.popup('Unexpected exception!\n', e)
 
+def new_user(user,password): # creating new user
+    safeUser = user.replace(' ','_')+'Table'
+    cur.execute(f'INSERT INTO PasswordTable VALUES ({user},{password})')
+    cur.execute(f'CREATE TABLE if not exists {safeUser} (Topic text, TimeSpent text)')
+
 def new_title(title, user='user'): # Creates tables to store information about new title, studyng by user. 
 
     try:
-        cur.execute('CREATE TABLE if not exists %s (User text, Password text)' %(input_modifier(title, user)))
         cur.execute('CREATE TABLE if not exists %s (Date text, Note text)' %(input_modifier(title, user)+'topicLog'))
         cur.execute('CREATE TABLE if not exists %s (TiteName text, Path text)' %(input_modifier(title, user)+'topicTitles'))
         con.commit()
@@ -47,3 +53,13 @@ def get_literature_list(tablename): # making a list object with title names onel
     except Exception as e:
         sg.popup('Unexpected exception!\n', e)
     return litList
+
+def initiating_instances(User): # Initiates instances of class Title using data from data base
+    tablename = input_modifier(title, user)
+    titleList = []
+    try:
+        for title, timeS in cur.execute(f'SELECT TiteName FROM {tablename}'):
+            titleList.append(CTitle.Title())
+    except Exception as e:
+        sg.popup('Unexpected exception!\n', e)
+    return titleList
